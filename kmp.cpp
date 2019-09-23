@@ -2,6 +2,11 @@
 using namespace std;
 void preKMP(string s,int lps[])
 {
+	// A border of s is a prefix less than s,which is also a suffix of s.
+	// A border of a border is a border. :- prove this and lps part is done.
+	// for calculating border for s[0..i+1] if s[0..i] is known
+	// you either pump the same border as of s[0..i]
+	// or you look for all borders of the border to be pumped in an organized way.  
 	int n=s.length(),index=0,i=1;
 	lps[0]=0;
 	while(i<n)
