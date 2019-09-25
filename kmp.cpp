@@ -1,12 +1,15 @@
 #include<bits/stdc++.h>
 using namespace std;
+// for kmp matching simply concatenate pattern#text
+// whenever lps is pattern.length(), we are getting a match
+// for calculating lps see the preKMP
 void preKMP(string s,int lps[])
 {
 	// A border of s is a prefix less than s,which is also a suffix of s.
 	// A border of a border is a border. :- prove this and lps part is done.
 	// for calculating border for s[0..i+1] if s[0..i] is known
 	// you either pump the same border as of s[0..i]
-	// or you look for all borders of the border to be pumped in an organized way.  
+	// or you look for all borders of the border to be pumped in an ordered fashion.  
 	int n=s.length(),index=0,i=1;
 	lps[0]=0;
 	while(i<n)
@@ -33,6 +36,7 @@ void preKMP(string s,int lps[])
 }
 vector<int> KmpOccurences(string text,string pattern,int lps[])
 {
+
 	int i=0,j=0,n=text.length(),m=pattern.length();
 	vector<int> ans;
 	while(i<n)
