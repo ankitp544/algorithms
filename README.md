@@ -1,4 +1,4 @@
-These are implementations of some Advanced Algorithms.
+These are implementations of some well-known Algorithms from the "Introduction to Algorithms" book by CLRS.
 
 For running a C++ program, use -
 ```
