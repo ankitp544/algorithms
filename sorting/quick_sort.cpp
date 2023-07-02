@@ -16,6 +16,7 @@ Worst case runtime of quick sort is O(n*n). It happens when the partitioning pro
 It occurs when input array is already sorted.
 */
 #include<iostream>
+#include<chrono>
 using namespace std;
 
 int partition(int arr[], int p, int r) {
@@ -43,11 +44,24 @@ void quickSort(int arr[], int p, int r) {
 }
 
 int main() {
-    int arr[] = {10, 15, 11, 29, 20, 19, 31, 50, 75, 65, 43, 23};
+    // int arr[] = {10, 15, 11, 29, 20, 19, 31, 50, 75, 65, 43, 23};
+    int arr[10000];
+    for (int i=0; i<10000; i++) {
+        arr[i] = rand() % 1000 + 1;
+    }
+
     int n = sizeof(arr) / sizeof(arr[0]);
+
+// ----------------------------------//
+    auto start = std::chrono::high_resolution_clock::now();
     quickSort(arr, 0, n - 1);
-    cout<<"sorted array is: "<<endl;
-    for (int i=0; i < n; i++) {
-        cout<<arr[i]<<" ";
-    }cout<<endl;
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "Running time: " << duration.count() << " milliseconds" << std::endl;
+
+// ----------------------------------//
+    // cout<<"sorted array is: "<<endl;
+    // for (int i=0; i < n; i++) {
+    //     cout<<arr[i]<<" ";
+    // }cout<<endl;
 }
