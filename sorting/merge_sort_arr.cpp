@@ -7,12 +7,11 @@ And then merge these sorted arrays in O(n1+n2) time to get the original sorted a
 Merge sort requires O(n) extra space 
 */
 #include<iostream>
-#include<vector>
 using namespace std;
 
-void merge(vector<int>& left, vector<int>& right, vector<int>& arr, int start) {
+void merge(int left[], int right[], int arr[], int start, int leftSize, int rightSize) {
     int i=0, j=0, k = 0;
-    while (i < left.size() && j < right.size()) {
+    while (i < leftSize && j < rightSize) {
         if (left[i] <= right[j]) {
             arr[start+k] = left[i];
             i++;
@@ -24,20 +23,20 @@ void merge(vector<int>& left, vector<int>& right, vector<int>& arr, int start) {
         }
     }
 
-    while (i < left.size()) {
+    while (i < leftSize) {
         arr[start+k] = left[i];
         i++;
         k++;
     }
 
-    while (j < right.size()) {
+    while (j < rightSize) {
         arr[start+k] = right[j];
         j++;
         k++;
     }
 }
 
-void mergeSort(vector<int>& arr, int start, int end) {
+void mergeSort(int arr[], int start, int end) {
     if (start >= end) {
         return;
     }
@@ -46,35 +45,32 @@ void mergeSort(vector<int>& arr, int start, int end) {
     mergeSort(arr, start, mid);
     mergeSort(arr, mid + 1, end);
 
-    vector<int> left, right;
+    int leftSize = mid - start + 1;
+    int rightSize = end - mid;
+    int left[leftSize], right[rightSize];
+    int it = 0;
     for (int i=start; i<=mid; i++) {
-        left.push_back(arr[i]);
+        left[it] = arr[i];
+        it++;
     }
 
+    it = 0;
     for (int i=mid+1; i<=end; i++) {
-        right.push_back(arr[i]);
+        right[it] = arr[i];
+        it++;
     }
 
-    merge(left, right, arr, start);
+    merge(left, right, arr, start, leftSize, rightSize);
 }
 
 int main() {
-    // int arr[] = {10, 15, 11, 29, 20, 19, 31, 50, 75, 65, 43, 23};
-    // int n = sizeof(arr) / sizeof(arr[0]);
-    // vector<int> vect(arr, arr + n);
-    // mergeSort(vect, 0, vect.size() - 1);
-    // cout<<"sorted array is:"<<endl;
-    // for (int i=0; i<vect.size(); i++) {
-    //     cout<<vect[i]<<" ";
-    // }cout<<endl;
-
-    vector<int> arr;
+    int arr[10000];
     for (int i=0; i<10000; i++) {
-        int num = rand() % 1000 + 1;
-        arr.push_back(num);
+        arr[i] = rand() % 1000 + 1;
     }
 
-    int n = arr.size();
+    int n = sizeof(arr) / sizeof(arr[0]);
+
 // ----------------------------------//
     auto start = std::chrono::high_resolution_clock::now();
     mergeSort(arr, 0, n - 1);

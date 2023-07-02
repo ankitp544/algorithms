@@ -43,25 +43,56 @@ void maxHeapifyArr(int arr[], int n) {
     }
 }
 
-int main() {
-    int arr[] = {31, 50, 75, 19, 65, 43, 23, 10, 15, 11, 29, 20};
-    int n = sizeof(arr)/sizeof(arr[0]);
-    cout<<"array size="<<n<<endl;
+void heapSort(int arr[], int n) {
     maxHeapifyArr(arr, n);
-    cout<<"after max heapify"<<endl;
-    for (int i=0; i<n; i++) {
-        cout<<arr[i]<<" ";
-    }cout<<endl;
-
     int end = n - 1;
     while (end > 0) {
         swap(arr[0], arr[end]);
         end--;
         maxHeapify(arr, 0, end + 1);
     }
+}
 
-    cout<<"sorted array"<<endl;
-    for (int i=0; i<n; i++) {
-        cout<<arr[i]<<" ";
-    }cout<<endl;
+int main() {
+    // int arr[] = {31, 50, 75, 19, 65, 43, 23, 10, 15, 11, 29, 20};
+    // int n = sizeof(arr)/sizeof(arr[0]);
+    // cout<<"array size="<<n<<endl;
+    // maxHeapifyArr(arr, n);
+    // cout<<"after max heapify"<<endl;
+    // for (int i=0; i<n; i++) {
+    //     cout<<arr[i]<<" ";
+    // }cout<<endl;
+
+    // int end = n - 1;
+    // while (end > 0) {
+    //     swap(arr[0], arr[end]);
+    //     end--;
+    //     maxHeapify(arr, 0, end + 1);
+    // }
+
+    // cout<<"sorted array"<<endl;
+    // for (int i=0; i<n; i++) {
+    //     cout<<arr[i]<<" ";
+    // }cout<<endl;
+
+
+    int arr[10000];
+    for (int i=0; i<10000; i++) {
+        arr[i] = rand() % 1000 + 1;
+    }
+
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+// ----------------------------------//
+    auto start = std::chrono::high_resolution_clock::now();
+    heapSort(arr, n);
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    std::cout << "Running time: " << duration.count() << " milliseconds" << std::endl;
+
+// ----------------------------------//
+    // cout<<"sorted array is: "<<endl;
+    // for (int i=0; i < n; i++) {
+    //     cout<<arr[i]<<" ";
+    // }cout<<endl;
 }
