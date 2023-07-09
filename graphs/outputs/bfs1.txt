@@ -1,0 +1,9 @@
+Vertex: s, has distance: 0
+Vertex: u, has distance: 1
+Vertex: t, has distance: 2
+Vertex: y, has distance: 2
+Vertex: r, has distance: 1
+Vertex: v, has distance: 1
+Vertex: w, has distance: 2
+Vertex: x, has distance: 3
+Vertex: z, has distance: 3

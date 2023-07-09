@@ -117,9 +117,16 @@ void getInput(ifstream& inFile, inputType& var) {
 
 int main() {
     ifstream inFile;
+    ofstream outFile;
     inFile.open("./inputs/bfs1.txt");
     if (!inFile) {
-        cout << "Unable to open file";
+        cout << "Unable to open input file";
+        exit(1);
+    }
+
+    outFile.open("./outputs/bfs1.txt");
+    if (!outFile) {
+        cout << "Unable to open output file";
         exit(1);
     }
 
@@ -150,8 +157,10 @@ int main() {
     bfs(G, G.getVertexByLabel(sourceLabel));
     for (const Vertex* v : G.vertices) {
         cout << "Vertex: " << v->label << ", has distance: " << v->distance << endl;
+        outFile << "Vertex: " << v->label << ", has distance: " << v->distance << endl;
     }
 
+    outFile.close();
     cout<<"printing path between s & z"<<endl;
     printPath(G, G.getVertexByLabel('s'), G.getVertexByLabel('z'));
     for (const Vertex* v : G.vertices) {
