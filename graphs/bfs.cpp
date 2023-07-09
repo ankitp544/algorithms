@@ -20,119 +20,12 @@ BFS.G; s/
 18 u:color D BLACK // u is now behind the frontier 
 */
 
-// #include <iostream>
-// #include <vector>
-// #include <map>
-// #include <queue>
-// #include <climits>
-
-// using namespace std;
-
-// #define INF INT_MAX / 2
-
-// enum Color { WHITE, GRAY, BLACK };
-
-// class Vertex {
-// public:
-//     char label;
-//     Color color;
-//     int distance;
-//     Vertex* ancestor;
-
-//     Vertex(char label) {
-//         this->label = label;
-//         this->color = WHITE;
-//         this->distance = INF;
-//         this->ancestor = NULL;
-//     }
-// };
-
-// class Graph {
-// private:
-//     map<char, Vertex> labelToVertex;
-
-// public:
-//     vector<Vertex> vertices;
-//     map<char, vector<Vertex>> adj;
-
-//     void addVertex(char label) {
-//         Vertex v = Vertex(label);
-//         labelToVertex[label] = v;
-//         vertices.push_back(v);
-//     }
-
-//     void addEdge(char startLabel, char endLabel) {
-//         Vertex& startVertex = labelToVertex[startLabel];
-//         Vertex& endVertex = labelToVertex[endLabel];
-//         adj[startLabel].push_back(endVertex);
-//         adj[endLabel].push_back(startVertex);
-//     }
-
-//     Vertex& getVertexByLabel(char label) {
-//         return labelToVertex[label];
-//     }
-// };
-
-// void bfs(Graph& G, Vertex& source) {
-//     source.color = GRAY;
-//     source.distance = 0;
-//     source.ancestor = nullptr;
-//     queue<Vertex*> q;
-//     q.push(&source);
-//     while (!q.empty()) {
-//         Vertex* u = q.front();
-//         q.pop();
-//         for (Vertex& v : G.adj[u->label]) {
-//             if (v.color == WHITE) {
-//                 v.color = GRAY;
-//                 v.distance = u->distance + 1;
-//                 v.ancestor = u;
-//                 q.push(&v);
-//             }
-//         }
-
-//         u->color = BLACK;
-//     }
-// }
-
-// int main() {
-//     int n, e;
-//     char label;
-//     cout << "Enter the number of nodes: ";
-//     cin >> n;
-//     cout << "Enter the node labels: ";
-//     Graph G;
-//     for (int i = 0; i < n; i++) {
-//         cin >> label;
-//         G.addVertex(label);
-//     }
-
-//     cout << "Enter the number of edges: ";
-//     cin >> e;
-//     char startEdgeLabel, endEdgeLabel;
-//     for (int i = 0; i < e; i++) {
-//         cout << "Enter the edge endpoints: ";
-//         cin >> startEdgeLabel >> endEdgeLabel;
-//         G.addEdge(startEdgeLabel, endEdgeLabel);
-//     }
-
-//     cout << "Enter the source label: ";
-//     char sourceLabel;
-//     cin >> sourceLabel;
-//     bfs(G, G.getVertexByLabel(sourceLabel));
-
-//     for (const Vertex& v : G.vertices) {
-//         cout << "Vertex: " << v.label << ", has distance: " << v.distance << endl;
-//     }
-
-//     return 0;
-// }
-
 #include <iostream>
 #include <vector>
 #include <map>
 #include <queue>
 #include <climits>
+#include <fstream>
 
 using namespace std;
 
@@ -203,37 +96,64 @@ void bfs(Graph& G, Vertex* source) {
     }
 }
 
+void printPath(Graph& G, Vertex* s, Vertex* v) {
+    if (v->label == s->label) {
+        printf("%c\n", v->label);
+    } else if (v->ancestor == nullptr) {
+        printf("no path exists between %c and %c", s->label, v->label);
+    } else {
+        printPath(G, s, v->ancestor);
+        printf("%c\n", v->label);
+    }
+}
+
+template <typename inputType>
+void getInput(ifstream& inFile, inputType& var) {
+    bool success = bool(inFile >> var);
+    if (!success) {
+        cout<<"input failed: may have reached end of file"<<endl;
+    }
+}
+
 int main() {
+    ifstream inFile;
+    inFile.open("./inputs/bfs1.txt");
+    if (!inFile) {
+        cout << "Unable to open file";
+        exit(1);
+    }
+
     int n, e;
     char label;
-    cout << "Enter the number of nodes: ";
-    cin >> n;
-    cout << "Enter the node labels: ";
     Graph G;
+    getInput<int>(inFile, n);
     for (int i = 0; i < n; i++) {
-        cin >> label;
+        inFile >> label;
+        cout<<"label is: "<<label<<endl;
         G.addVertex(label);
     }
 
-    cout << "Enter the number of edges: ";
-    cin >> e;
+    getInput<int>(inFile, e);
+    cout<<"number of edges is:"<<e<<endl;
     char startEdgeLabel, endEdgeLabel;
     for (int i = 0; i < e; i++) {
-        cout << "Enter the edge endpoints: ";
-        cin >> startEdgeLabel >> endEdgeLabel;
+        getInput<char>(inFile, startEdgeLabel);
+        getInput<char>(inFile, endEdgeLabel);
+        cout<<"edge ends are: "<<startEdgeLabel<<" "<<endEdgeLabel<<endl;
         G.addEdge(startEdgeLabel, endEdgeLabel);
     }
 
-    cout << "Enter the source label: ";
     char sourceLabel;
-    cin >> sourceLabel;
-    bfs(G, G.getVertexByLabel(sourceLabel));
+    getInput<char>(inFile, sourceLabel);
+    inFile.close();
 
+    bfs(G, G.getVertexByLabel(sourceLabel));
     for (const Vertex* v : G.vertices) {
         cout << "Vertex: " << v->label << ", has distance: " << v->distance << endl;
     }
 
-    // Clean up dynamically allocated Vertex objects
+    cout<<"printing path between s & z"<<endl;
+    printPath(G, G.getVertexByLabel('s'), G.getVertexByLabel('z'));
     for (const Vertex* v : G.vertices) {
         delete v;
     }
