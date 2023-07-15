@@ -11,11 +11,11 @@ BFS.G; s/
 9 ENQUEUE.Q; s/
 10 while Q ¤ ;
 11 u D DEQUEUE.Q/
-12 for each vertex v in G:AdjŒu� // search the neighbors of u
+12 for each vertex v in G.Adj[u] // search the neighbors of u
 13 if v:color = = WHITE // is v being discovered now?
 14 v:color D GRAY
 15 v:d D u:d C 1
-16 v:� D u
+16 v.D = u
 17 ENQUEUE.Q; v/ // v is now on the frontier
 18 u:color D BLACK // u is now behind the frontier 
 */
